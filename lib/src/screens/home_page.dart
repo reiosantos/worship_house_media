@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:whm/src/ui/containers/main_frame.dart';
+import 'package:whm/src/index.dart';
+import 'package:whm/src/screens/containers/main_frame.dart';
+import 'package:whm/src/utilities/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
         title: widget.title,
         imageUrl: widget.imageUrl,
         body: Container(
-          child: Text('Dude', style: Theme.of(context).textTheme.display1),
+          child: Text(APP_TITLE, style: Theme.of(context).textTheme.display1),
           color: Theme.of(context).primaryColor,
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         ));

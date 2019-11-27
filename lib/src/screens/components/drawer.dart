@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:whm/src/blocs/menu.dart';
-import 'package:whm/src/models/menu.dart';
-import 'package:whm/src/whm_theme.dart';
+import 'package:whm/src/index.dart';
+import 'package:whm/src/theme/whm_colors.dart';
 
 class WhmDrawer extends StatelessWidget {
   @override
@@ -27,10 +26,10 @@ class WhmDrawer extends StatelessWidget {
               child: const DrawerHeader(child: CircleAvatar()),
             ),
             Container(
-              child: StreamBuilder<Menu>(
+              child: StreamBuilder<List<String>>(
                   stream: menuBloc.menuStream,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Menu> snapshot) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<String>> snapshot) {
                     if (snapshot.hasData) {
                       return buildList(snapshot);
                     } else if (snapshot.hasError) {
@@ -43,8 +42,8 @@ class WhmDrawer extends StatelessWidget {
         ));
   }
 
-  Widget buildList(AsyncSnapshot<Menu> snapshot) {
-    final List<String> results = snapshot.data.menu;
+  Widget buildList(AsyncSnapshot<List<String>> snapshot) {
+    final List<String> results = snapshot.data;
 
     return ListView.separated(
       itemCount: results.length,

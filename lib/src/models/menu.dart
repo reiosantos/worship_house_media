@@ -1,13 +1,9 @@
-import 'package:json_annotation/json_annotation.dart';
+// build command: flutter pub run build_runner build
 
-part 'menu.g.dart';
-
-@JsonSerializable()
-class Menu extends Object {
-  Menu({this.menu});
-
-  factory Menu.fromJson(Map<String, dynamic> parsedJson) =>
-      _$MenuFromJson(parsedJson);
-
+abstract class IMenu {
   List<String> menu;
+  Future<List<String>> fetchMenu();
+
+  dynamic whoWeAre();
+  dynamic information();
 }

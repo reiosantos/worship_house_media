@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:whm/src/whm_theme.dart';
+import 'package:whm/src/index.dart';
+import 'package:whm/src/theme/whm_colors.dart';
 
 class WhmSearchBar extends StatelessWidget {
   const WhmSearchBar(
@@ -34,7 +34,7 @@ class WhmSearchBar extends StatelessWidget {
                               _scaffold.openDrawer();
                             }
                           }),
-                      Expanded(
+                      const Expanded(
                           child: TextField(
                               decoration: InputDecoration(
                         hintText: 'Search',

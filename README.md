@@ -2,15 +2,25 @@
 
 Worship House Ministries, Olokoka Ddi Village
 
-## Getting Started
+## Folder Structure
 
-This project is a starting point for a Flutter application.
+### screens: 
+This folder contains the screens which will be configured in the routes in the main.dart file.
 
-A few resources to get you started if this is your first Flutter project:
+### providers: 
+I’m using provider pattern for this application for state management, so all the provider files goes to the providers folder with the file naming convention “user_provider.dart” as an example.
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+### models: 
+Providers will use these models, sort of mapped with my entity in database.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+### services: 
+This folder is for backend operation like connecting to the Firestore or invoking HTTP calls etc.
+
+### utilities: 
+All the common items goes in here, example., constants used in the project.
+
+### widgets: 
+Contains the common widgets for your applications. For example, Button , TextField etc.
+
+### routes.dart: 
+Contains the routes of your application and imports all screens.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:whm/src/ui/components/drawer.dart';
-import 'package:whm/src/ui/containers/scroll_view.dart';
+import 'package:whm/src/screens/components/drawer.dart';
+import 'package:whm/src/screens/containers/scroll_view.dart';
 
 class WhmMainFrame extends StatelessWidget {
   const WhmMainFrame({

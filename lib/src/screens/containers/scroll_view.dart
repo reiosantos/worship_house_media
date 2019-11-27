@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whm/src/ui/components/app_bar.dart';
+import 'package:whm/src/screens/components/app_bar.dart';
 
 class WhmScrollView extends StatelessWidget {
   const WhmScrollView(

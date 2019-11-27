@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:whm/src/ui/components/search_bar.dart';
+import 'package:whm/src/index.dart';
+import 'package:whm/src/screens/components/search_bar.dart';
 
 class WhmAppBar extends SliverPersistentHeaderDelegate {
   WhmAppBar(

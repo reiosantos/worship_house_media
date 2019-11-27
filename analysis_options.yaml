@@ -39,6 +39,7 @@ analyzer:
     - 'lib/i18n/stock_messages_*.dart'
     - 'lib/src/http/**'
     - 'lib/src/**/*.g.dart'
+    - 'lib/src/i18n/whm_*'
   language:
     enableAssertInitializer: true
 

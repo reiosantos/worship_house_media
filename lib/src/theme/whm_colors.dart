@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:whm/src/index.dart';
 
 abstract class WhmColors {
   static const int _primary = 0xFF333333; // rgb(51,51,51)
   static const int _secondary = 0xFFFFC400; // rgb(255,196,0)
 
-  static final MaterialColor _primaryColor =
+  static final MaterialColor primaryColor =
       MaterialColor(_primary, getPrimarySwatch());
 
   static final MaterialColor _secondaryColor =
@@ -20,7 +20,7 @@ abstract class WhmColors {
   static final Color kWhmGray50 = Colors.grey.shade50;
 
   static const Color kWhmPrimary = Color(_primary);
-  static final Color kWhmPrimaryDark = _primaryColor.shade700;
+  static final Color kWhmPrimaryDark = primaryColor.shade700;
 
   static const Color kWhmSecondary = Color(_secondary);
   static final Color kWhmSecondaryDark = _secondaryColor.shade700;
@@ -58,29 +58,4 @@ abstract class WhmColors {
   }
 
   ThemeData createWhmTheme();
-}
-
-class AppTheme extends WhmColors {
-  @override
-  ThemeData createWhmTheme() {
-    final ThemeData base = ThemeData(
-        primarySwatch: WhmColors._primaryColor,
-        primaryColor: WhmColors.kWhmPrimary,
-        primaryColorDark: WhmColors.kWhmPrimaryDark,
-        canvasColor: WhmColors.kWhmPrimary,
-        accentColor: WhmColors.kWhmSecondary,
-        backgroundColor: WhmColors.kWhmPrimaryDark);
-
-    return base.copyWith(
-      buttonTheme: base.buttonTheme.copyWith(
-        textTheme: ButtonTextTheme.normal,
-      ),
-      textTheme: base.textTheme.copyWith(
-          body1: base.textTheme.body1.copyWith(color: WhmColors.kWhmTextColor)),
-      textSelectionColor: WhmColors.kWhmGray50,
-      errorColor: WhmColors.kWhmErrorRed,
-    );
-  }
-
-//  ThemeData kWhmTheme = _buildWhmTheme();
 }
