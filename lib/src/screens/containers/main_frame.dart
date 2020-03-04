@@ -3,14 +3,8 @@ import 'package:whm/src/screens/components/drawer.dart';
 import 'package:whm/src/screens/containers/scroll_view.dart';
 
 class WhmMainFrame extends StatelessWidget {
-  const WhmMainFrame({
-    @required this.title,
-    @required this.imageUrl,
-    @required this.body,
-  });
+  const WhmMainFrame({@required this.body,});
 
-  final String title;
-  final String imageUrl;
   final Widget body;
 
   @override
@@ -19,7 +13,7 @@ class WhmMainFrame extends StatelessWidget {
       primary: true,
       resizeToAvoidBottomInset: false,
       drawer: WhmDrawer(),
-      body: WhmScrollView(title: title, imageUrl: imageUrl, body: body),
+      body: WhmScrollView(body: body),
     );
   }
 }

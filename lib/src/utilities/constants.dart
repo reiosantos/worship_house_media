@@ -3,3 +3,4 @@ const String MAIN_IMG =
     'https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
 
 const String APP_TITLE = 'Worship House Minstries';
+const String WHM_IMG = 'assets/images/wh.jpg';
