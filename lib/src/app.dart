@@ -1,31 +1,47 @@
-import 'package:whm/src/blocs/menu/menu_bloc.dart';
 import 'package:whm/src/index.dart';
-import 'package:whm/src/screens/containers/main_frame.dart';
-import 'package:whm/src/theme/whm_theme.dart';
+import 'package:whm/src/providers/navigator_provider.dart';
+import 'package:whm/src/providers/service_locator.dart';
+import 'package:whm/src/theme/theme.dart';
+import 'package:whm/src/ui/screens/containers/tab_controller.dart';
 import 'package:whm/src/utilities/constants.dart';
+
+import 'routes.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
 
+  Widget _iosApp() {
+    return CupertinoApp(
+      title: APP_TITLE,
+      theme: AppTheme().createTheme() as CupertinoThemeData,
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      routes: routes,
+      navigatorKey: locator<NavigationProvider>().navigatorKey,
+      onGenerateRoute: onGenerateRoute,
+      home: SanTabController(),
+    );
+  }
+
+  Widget _androidApp() {
+    return MaterialApp(
+      title: APP_TITLE,
+      theme: AppTheme().createTheme() as ThemeData,
+      routes: routes,
+      navigatorKey: locator<NavigationProvider>().navigatorKey,
+      onGenerateRoute: onGenerateRoute,
+      home: SanTabController(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MenuBloc>(
-      create: (BuildContext context) => MenuBloc(),
-      child: MaterialApp(
-        title: APP_TITLE,
-        theme: AppTheme().createWhmTheme(),
-        home: BlocBuilder<MenuBloc, MenuState>(
-          builder: (BuildContext context, MenuState state) {
-            return WhmMainFrame(
-              body: Container(
-                child: Text(state.title, style: Theme.of(context).textTheme.display1),
-                color: Theme.of(context).primaryColor,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              ),
-            );
-          },
-        ),
-      ),
-    );
+    if (Platform.isIOS) {
+      return _iosApp();
+    }
+    return _androidApp();
   }
 }

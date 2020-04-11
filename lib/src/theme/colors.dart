@@ -1,6 +1,6 @@
 import 'package:whm/src/index.dart';
 
-abstract class WhmColors {
+abstract class SanColors {
   static const int _primary = 0xFF333333; // rgb(51,51,51)
   static const int _secondary = 0xFFFFC400; // rgb(255,196,0)
 
@@ -10,22 +10,22 @@ abstract class WhmColors {
   static final MaterialColor _secondaryColor =
       MaterialColor(_secondary, getSecondarySwatch());
 
-  static const Color kWhmRed = Colors.red;
-  static const Color kWhmErrorRed = Colors.red;
+  static const Color sanRed = Colors.red;
+  static const Color sanErrorRed = Colors.red;
 
-  static const Color kWhmWhite = Colors.white;
-  static const Color kWhmBackgroundWhite = Colors.white70;
+  static const Color sanWhite = Colors.white;
+  static const Color sanBackgroundWhite = Colors.white70;
 
-  static const Color kWhmGray = Colors.grey;
-  static final Color kWhmGray50 = Colors.grey.shade50;
+  static const Color sanGray = Colors.grey;
+  static final Color sanGray50 = Colors.grey.shade50;
 
-  static const Color kWhmPrimary = Color(_primary);
-  static final Color kWhmPrimaryDark = primaryColor.shade700;
+  static const Color sanPrimary = Color(_primary);
+  static final Color sanPrimaryDark = primaryColor.shade700;
 
-  static const Color kWhmSecondary = Color(_secondary);
-  static final Color kWhmSecondaryDark = _secondaryColor.shade700;
+  static const Color sanSecondary = Color(_secondary);
+  static final Color sanSecondaryDark = _secondaryColor.shade700;
 
-  static const Color kWhmTextColor = Colors.white;
+  static const Color sanTextColor = Colors.white;
 
   static Map<int, Color> getPrimarySwatch() {
     return const <int, Color>{
@@ -57,5 +57,5 @@ abstract class WhmColors {
     };
   }
 
-  ThemeData createWhmTheme();
+  Diagnosticable createTheme();
 }

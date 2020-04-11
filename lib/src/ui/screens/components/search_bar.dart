@@ -1,5 +1,5 @@
 import 'package:whm/src/index.dart';
-import 'package:whm/src/theme/whm_colors.dart';
+import 'package:whm/src/theme/colors.dart';
 
 class WhmSearchBar extends StatelessWidget {
   const WhmSearchBar(
@@ -10,7 +10,7 @@ class WhmSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScaffoldState _scaffold = Scaffold.of(context);
+    final _scaffold = Scaffold.of(context);
 
     return Positioned(
         top: _top(shrinkOffset),
@@ -24,11 +24,11 @@ class WhmSearchBar extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5.0),
                         border:
-                            Border.all(color: WhmColors.kWhmGray, width: 1.0),
-                        color: WhmColors.kWhmWhite),
+                            Border.all(color: SanColors.sanGray, width: 1.0),
+                        color: SanColors.sanWhite),
                     child: Row(children: <Widget>[
                       IconButton(
-                          icon: Icon(Icons.menu, color: WhmColors.kWhmPrimary),
+                          icon: Icon(Icons.menu, color: SanColors.sanPrimary),
                           onPressed: () {
                             if (_scaffold.hasDrawer) {
                               _scaffold.openDrawer();
@@ -40,8 +40,7 @@ class WhmSearchBar extends StatelessWidget {
                         hintText: 'Search',
                       ))),
                       IconButton(
-                          icon:
-                              Icon(Icons.search, color: WhmColors.kWhmPrimary),
+                          icon: Icon(Icons.search, color: SanColors.sanPrimary),
                           onPressed: () {
                             print('your menu action here');
                           })
@@ -49,7 +48,8 @@ class WhmSearchBar extends StatelessWidget {
   }
 
   double _top(double shrinkOffset) {
-    double size = expandedHeight / 2 - shrinkOffset;
+    var size = expandedHeight / 2 - shrinkOffset;
+
     if (size < 0) {
       size = 30;
     }
