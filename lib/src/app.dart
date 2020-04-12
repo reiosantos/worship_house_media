@@ -13,7 +13,8 @@ class App extends StatelessWidget {
   Widget _iosApp() {
     return CupertinoApp(
       title: APP_TITLE,
-      theme: AppTheme().createTheme() as CupertinoThemeData,
+      theme: AppTheme().lightTheme() as CupertinoThemeData,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: <LocalizationsDelegate<dynamic>>[
         DefaultMaterialLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
@@ -29,7 +30,9 @@ class App extends StatelessWidget {
   Widget _androidApp() {
     return MaterialApp(
       title: APP_TITLE,
-      theme: AppTheme().createTheme() as ThemeData,
+      theme: AppTheme().lightTheme() as ThemeData,
+      darkTheme: AppTheme().darkTheme() as ThemeData,
+      debugShowCheckedModeBanner: false,
       routes: routes,
       navigatorKey: locator<NavigationProvider>().navigatorKey,
       onGenerateRoute: onGenerateRoute,
