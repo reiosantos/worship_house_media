@@ -68,5 +68,6 @@ abstract class SanColors {
     };
   }
 
-  Diagnosticable createTheme();
+  Diagnosticable lightTheme();
+  Diagnosticable darkTheme();
 }

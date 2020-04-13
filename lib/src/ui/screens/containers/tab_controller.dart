@@ -1,4 +1,5 @@
 import 'package:whm/src/index.dart';
+import 'package:whm/src/ui/screens/components/theme_switch.dart';
 import 'package:whm/src/ui/screens/home.dart';
 import 'package:whm/src/ui/screens/notifications.dart';
 import 'package:whm/src/ui/screens/people.dart';
@@ -53,6 +54,7 @@ class _SanTabController extends State<SanTabController> {
             return CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
                 middle: Text(APP_TITLE),
+                leading: ThemeSwitch(),
               ),
               child: items[index],
             );
@@ -72,6 +74,7 @@ class _SanTabController extends State<SanTabController> {
         resizeToAvoidBottomInset: false,
         body: Scaffold(
           appBar: AppBar(
+            leading: ThemeSwitch(),
             title: Center(child: Text(APP_TITLE)),
           ),
           body: items[widget._selectedPage],

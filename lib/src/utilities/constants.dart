@@ -5,6 +5,8 @@ const String MAIN_IMG =
 const String APP_TITLE = 'Worship House Minstries';
 const String WHM_IMG = 'assets/images/wh.jpg';
 
+enum ThemeSwitchMode { LIGHT, DARK, SYSTEM }
+
 class ScreenArguments {
   final String title;
 

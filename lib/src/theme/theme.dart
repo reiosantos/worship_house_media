@@ -2,16 +2,18 @@ import 'package:whm/src/index.dart';
 import 'package:whm/src/theme/colors.dart';
 
 class AppTheme extends SanColors {
-  @override
-  Diagnosticable createTheme() {
+  bool iosOverrideMaterialTheme = true;
+
+  Diagnosticable _createTheme() {
     var theme = ThemeData();
 
-    final base = ThemeData(
+    return ThemeData(
       primarySwatch: SanColors.primaryColor,
       accentColor: SanColors.accent,
       scaffoldBackgroundColor: SanColors.lightBackground,
       appBarTheme: theme.appBarTheme.copyWith(
         elevation: 0,
+        textTheme: theme.textTheme,
       ),
       textTheme: theme.textTheme.copyWith(
         title: theme.textTheme.title.copyWith(
@@ -19,120 +21,94 @@ class AppTheme extends SanColors {
           fontWeight: FontWeight.bold,
         ),
       ),
-    );
-
-    final iosBase = CupertinoThemeData(
-      primaryColor: SanColors.primaryColor,
-    );
-
-    if (Platform.isIOS) {
-      return iosBase;
-    }
-    return base.copyWith(
-      appBarTheme: base.appBarTheme.copyWith(
-        textTheme: base.textTheme,
-      ),
-      accentIconTheme: base.accentIconTheme.copyWith(
+      accentIconTheme: theme.accentIconTheme.copyWith(
         color: SanColors.accentColor.shade900,
       ),
     );
   }
 
-  Diagnosticable lightTheme() {
-    if (Platform.isIOS) {
-      var base1 = (createTheme() as CupertinoThemeData);
-      return base1.copyWith(
-        barBackgroundColor: SanColors.lightBackground,
-        scaffoldBackgroundColor: SanColors.lightBackground,
-        brightness: Brightness.light,
-        textTheme: base1.textTheme.copyWith(
-          primaryColor: SanColors.lightText,
-          textStyle: TextStyle(
-            color: SanColors.lightText,
-          ),
-        ),
-      );
-    }
+  Diagnosticable _theme(
+      Color backgroundColor, Color textColor, Brightness brightness) {
+    var base = (_createTheme() as ThemeData);
 
-    var base = (createTheme() as ThemeData);
-    return base.copyWith(
-      brightness: Brightness.light,
-      backgroundColor: SanColors.lightBackground,
-      scaffoldBackgroundColor: SanColors.lightBackground,
+    base = base.copyWith(
+      brightness: brightness,
+      backgroundColor: backgroundColor,
+      scaffoldBackgroundColor: backgroundColor,
       appBarTheme: base.appBarTheme.copyWith(
-        color: SanColors.lightBackground,
+        color: backgroundColor,
         textTheme: base.appBarTheme.textTheme.copyWith(
           title: base.appBarTheme.textTheme.title.copyWith(
-            color: SanColors.lightText,
+            color: textColor,
           ),
           body1: base.appBarTheme.textTheme.body1.copyWith(
-            color: SanColors.lightText,
+            color: textColor,
           ),
         ),
         actionsIconTheme: base.accentIconTheme.copyWith(
-          color: SanColors.lightText,
+          color: textColor,
         ),
         iconTheme: base.iconTheme.copyWith(
-          color: SanColors.lightText,
+          color: textColor,
         ),
       ),
       textTheme: base.textTheme.copyWith(
         title: base.textTheme.title.copyWith(
-          color: SanColors.lightText,
+          color: textColor,
         ),
         body1: base.textTheme.body1.copyWith(
-          color: SanColors.lightText,
+          color: textColor,
         ),
       ),
+      popupMenuTheme: base.popupMenuTheme.copyWith(
+        color: textColor,
+        elevation: 2,
+      ),
+      cardTheme: base.cardTheme.copyWith(
+        color: backgroundColor,
+        elevation: 2,
+      ),
+    );
+
+    if (Platform.isIOS) {
+      var base1 = CupertinoThemeData();
+      base1 = base1.copyWith(
+        primaryColor: SanColors.primaryColor,
+        barBackgroundColor: backgroundColor,
+        scaffoldBackgroundColor: backgroundColor,
+        brightness: brightness,
+        textTheme: base1.textTheme.copyWith(
+          primaryColor: textColor,
+          textStyle: base1.textTheme.textStyle.copyWith(
+            color: textColor,
+          ),
+        ),
+      );
+
+      var base2 = base;
+      if (iosOverrideMaterialTheme) {
+        base2 = base.copyWith(cupertinoOverrideTheme: base1);
+      }
+      return MaterialBasedCupertinoThemeData(materialTheme: base2);
+    }
+    return base;
+  }
+
+  @override
+  Diagnosticable lightTheme() {
+    return _theme(
+      SanColors.lightBackground,
+      SanColors.lightText,
+      Brightness.light,
     );
   }
 
+  @override
   Diagnosticable darkTheme() {
-    if (Platform.isIOS) {
-      var base1 = (createTheme() as CupertinoThemeData);
-      return base1.copyWith(
-        barBackgroundColor: SanColors.darkBackground,
-        scaffoldBackgroundColor: SanColors.darkBackground,
-        brightness: Brightness.dark,
-        textTheme: base1.textTheme.copyWith(
-          primaryColor: SanColors.darkText,
-          textStyle: TextStyle(
-            color: SanColors.darkText,
-          ),
-        ),
-      );
-    }
-
-    var base = (createTheme() as ThemeData);
-    return base.copyWith(
-      brightness: Brightness.dark,
-      backgroundColor: SanColors.darkBackground,
-      scaffoldBackgroundColor: SanColors.darkBackground,
-      appBarTheme: base.appBarTheme.copyWith(
-        color: SanColors.darkBackground,
-        textTheme: base.appBarTheme.textTheme.copyWith(
-          title: base.appBarTheme.textTheme.title.copyWith(
-            color: SanColors.darkText,
-          ),
-          body1: base.appBarTheme.textTheme.body1.copyWith(
-            color: SanColors.darkText,
-          ),
-        ),
-        actionsIconTheme: base.accentIconTheme.copyWith(
-          color: SanColors.darkText,
-        ),
-        iconTheme: base.iconTheme.copyWith(
-          color: SanColors.darkText,
-        ),
-      ),
-      textTheme: base.textTheme.copyWith(
-        title: base.textTheme.title.copyWith(
-          color: SanColors.darkText,
-        ),
-        body1: base.textTheme.body1.copyWith(
-          color: SanColors.darkText,
-        ),
-      ),
+    return _theme(
+      SanColors.darkBackground,
+      SanColors.darkText,
+      Brightness.dark,
     );
   }
 }
