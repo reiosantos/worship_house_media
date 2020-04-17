@@ -1,20 +1,60 @@
-import 'package:flutter/material.dart';
-import 'package:whm/src/ui/home_page.dart';
-import 'package:whm/src/whm_theme.dart';
+import 'package:whm/src/blocs/theme/bloc.dart';
+import 'package:whm/src/index.dart';
+import 'package:whm/src/providers/navigator_provider.dart';
+import 'package:whm/src/providers/service_locator.dart';
+import 'package:whm/src/ui/screens/containers/tab_controller.dart';
+import 'package:whm/src/utilities/constants.dart';
+
+import 'routes.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
 
-  final String imageUrl =
-      'https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
-  final String title = 'Worship House Minstries';
+  Widget _iosApp(ChangeThemeState state) {
+    return CupertinoApp(
+      title: APP_TITLE,
+      theme: state.themeData as CupertinoThemeData,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      routes: routes,
+      navigatorKey: locator<NavigationProvider>().navigatorKey,
+      onGenerateRoute: onGenerateRoute,
+      home: SanTabController(),
+    );
+  }
+
+  Widget _androidApp(ChangeThemeState state) {
+    return MaterialApp(
+      title: APP_TITLE,
+      theme: state.themeData as ThemeData,
+      debugShowCheckedModeBanner: false,
+      routes: routes,
+      navigatorKey: locator<NavigationProvider>().navigatorKey,
+      onGenerateRoute: onGenerateRoute,
+      home: SanTabController(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: title,
-      theme: AppTheme().createWhmTheme(),
-      home: const HomePage(),
+    return BlocProvider(
+      create: (BuildContext context1) => ThemeBloc(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return Material(
+            child: (() {
+              if (Platform.isIOS) {
+                return _iosApp(state as ChangeThemeState);
+              }
+              return _androidApp(state as ChangeThemeState);
+            })(),
+          );
+        },
+      ),
     );
   }
 }
