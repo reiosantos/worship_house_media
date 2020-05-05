@@ -37,6 +37,7 @@ class AppTheme extends SanColors {
       scaffoldBackgroundColor: backgroundColor,
       appBarTheme: base.appBarTheme.copyWith(
         color: backgroundColor,
+        brightness: brightness,
         textTheme: base.appBarTheme.textTheme.copyWith(
           title: base.appBarTheme.textTheme.title.copyWith(
             color: textColor,
@@ -69,6 +70,13 @@ class AppTheme extends SanColors {
         elevation: 2,
       ),
     );
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: base.appBarTheme.color,
+      systemNavigationBarColor: base.appBarTheme.color,
+      systemNavigationBarIconBrightness:
+          brightness == Brightness.light ? Brightness.dark : Brightness.light,
+    ));
 
     if (Platform.isIOS) {
       var base1 = CupertinoThemeData();
