@@ -37,6 +37,8 @@ class SanBottomNavigation extends StatefulWidget {
 
 class _SanBottomNavigation extends State<SanBottomNavigation> {
   BottomNavigationBloc _bottomNavigationBloc;
+  ThemeData _androidTheme;
+  CupertinoThemeData _iosTheme;
 
   final List<BottomNavigationBarItem> tabs = navItems.map((List<Widget> item) {
     return BottomNavigationBarItem(
@@ -45,25 +47,53 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
     );
   }).toList();
 
-  Widget _ios(BuildContext context) {
-    var theme = CupertinoTheme.of(context);
+  void _onPressSearch() {
+    print('your menu action here');
+  }
 
+  Widget _searchButton({Brightness brightness, Icon icon}) {
+    if (Platform.isIOS) {
+      return IconButton(
+        iconSize: 32,
+        icon: Icon(
+          CupertinoIcons.search,
+          color: _iosTheme.textTheme.textStyle.color,
+        ),
+        onPressed: _onPressSearch,
+      );
+    }
+    return IconButton(
+      iconSize: 32,
+      icon: Icon(Icons.search),
+      onPressed: _onPressSearch,
+    );
+  }
+
+  Widget _ios(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        backgroundColor: theme.barBackgroundColor,
-        activeColor: theme.textTheme.textStyle.color,
+        backgroundColor: _iosTheme.barBackgroundColor,
+        activeColor: _iosTheme.textTheme.textStyle.color,
         items: tabs,
+        currentIndex: widget._selectedPage,
         onTap: (int index) {
           _bottomNavigationBloc.add(BottomNavigationEventImpl(index));
         },
       ),
-      tabBuilder: (BuildContext context, int index) {
+      tabBuilder: (BuildContext context1, int index) {
         return CupertinoTabView(
-          builder: (BuildContext context1) {
+          builder: (BuildContext context2) {
             return CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
-                middle: Text(APP_TITLE),
                 leading: ThemeSwitch(),
+                middle: Text(
+                  APP_TITLE,
+                  textScaleFactor: 1.0,
+                  style: _iosTheme.textTheme.textStyle.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                trailing: _searchButton(),
               ),
               child: navItems[index][PAGE_IDX],
             );
@@ -74,7 +104,7 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
   }
 
   Widget _android(BuildContext context) {
-    var appBarTheme = Theme.of(context).appBarTheme;
+    var appBarTheme = _androidTheme.appBarTheme;
 
     return DefaultTabController(
       length: tabs.length,
@@ -84,7 +114,18 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
         body: Scaffold(
           appBar: AppBar(
             leading: ThemeSwitch(),
-            title: Center(child: Text(APP_TITLE)),
+            actions: <Widget>[
+              _searchButton(),
+            ],
+            title: Center(
+              child: Text(
+                APP_TITLE,
+                textScaleFactor: 1.5,
+                style: appBarTheme.textTheme.title.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
           ),
           body: navItems[widget._selectedPage][PAGE_IDX],
           bottomNavigationBar: BottomNavigationBar(
@@ -113,9 +154,11 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
   @override
   Widget build(BuildContext context) {
     _bottomNavigationBloc = context.bloc<BottomNavigationBloc>();
+    _iosTheme = CupertinoTheme.of(context);
+    _androidTheme = Theme.of(context);
 
     return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
-      builder: (context, state) {
+      builder: (context1, state) {
         var _state = state as InitialBottomNavigationState;
         widget._selectedPage = _state.selectedTab;
 

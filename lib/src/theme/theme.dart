@@ -31,6 +31,8 @@ class AppTheme extends SanColors {
       Color backgroundColor, Color textColor, Brightness brightness) {
     var base = (_createTheme() as ThemeData);
 
+    var isLight = brightness == Brightness.light;
+
     base = base.copyWith(
       brightness: brightness,
       backgroundColor: backgroundColor,
@@ -75,7 +77,7 @@ class AppTheme extends SanColors {
       statusBarColor: base.appBarTheme.color,
       systemNavigationBarColor: base.appBarTheme.color,
       systemNavigationBarIconBrightness:
-          brightness == Brightness.light ? Brightness.dark : Brightness.light,
+          isLight ? Brightness.dark : Brightness.light,
     ));
 
     if (Platform.isIOS) {

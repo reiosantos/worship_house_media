@@ -48,7 +48,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (BuildContext context1) => BottomNavigationBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, state) {
+        builder: (context2, state) {
           return Material(
             child: (() {
               if (Platform.isIOS) {
