@@ -1,3 +1,4 @@
+import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:whm/src/blocs/theme/bloc.dart';
 import 'package:whm/src/index.dart';
 import 'package:whm/src/providers/navigator_provider.dart';
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
       routes: routes,
       navigatorKey: locator<NavigationProvider>().navigatorKey,
       onGenerateRoute: onGenerateRoute,
-      home: SanTabController(),
+      home: SanBottomNavigation(),
     );
   }
 
@@ -35,14 +36,17 @@ class App extends StatelessWidget {
       routes: routes,
       navigatorKey: locator<NavigationProvider>().navigatorKey,
       onGenerateRoute: onGenerateRoute,
-      home: SanTabController(),
+      home: SanBottomNavigation(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context1) => ThemeBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (BuildContext context1) => ThemeBloc()),
+        BlocProvider(create: (BuildContext context1) => BottomNavigationBloc()),
+      ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
           return Material(
