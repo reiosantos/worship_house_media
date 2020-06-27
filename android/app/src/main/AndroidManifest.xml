@@ -15,7 +15,11 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="worship_house_media"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher">
+
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCtMve-jcmoqSPX0eOSHRLlZkEI094vu2U" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
