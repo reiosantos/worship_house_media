@@ -1,3 +1,6 @@
+import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_bloc.dart';
+import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_event.dart';
+import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_state.dart';
 import 'package:whm/src/index.dart';
 import 'package:whm/src/ui/screens/components/theme_switch.dart';
 import 'package:whm/src/ui/screens/home.dart';
@@ -8,55 +11,91 @@ import 'package:whm/src/ui/screens/user.dart';
 import 'package:whm/src/ui/screens/videos.dart';
 import 'package:whm/src/utilities/constants.dart';
 
-// ignore: must_be_immutable
-class SanTabController extends StatefulWidget {
-  SanTabController({Key key}) : super(key: key);
+final navItems = [
+  // [Icon, Title, Page]
+  [Icon(Icons.home), Container(), HomePage()],
+  [Icon(Icons.people), Container(), PeoplePage()],
+  [Icon(Icons.video_library), Container(), VideoPage()],
+  [Icon(Icons.notifications), Container(), NotificationPage()],
+  [Icon(Icons.person), Container(), UserPage()],
+  [Icon(Icons.menu), Container(), SettingPage()],
+];
 
-  int _selectedPage = 0;
+const ICON_IDX = 0;
+const TITLE_IDX = 1;
+const PAGE_IDX = 2;
+
+// ignore: must_be_immutable
+class SanBottomNavigation extends StatefulWidget {
+  SanBottomNavigation({Key key}) : super(key: key);
+
+  int _selectedPage;
 
   @override
-  State<StatefulWidget> createState() => _SanTabController();
+  State<StatefulWidget> createState() => _SanBottomNavigation();
 }
 
-class _SanTabController extends State<SanTabController> {
-  final List<BottomNavigationBarItem> tabs = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(icon: Icon(Icons.home), title: Container()),
-    BottomNavigationBarItem(icon: Icon(Icons.people), title: Container()),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.video_library), title: Container()),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.notifications), title: Container()),
-    BottomNavigationBarItem(icon: Icon(Icons.person), title: Container()),
-    BottomNavigationBarItem(icon: Icon(Icons.menu), title: Container()),
-  ];
+class _SanBottomNavigation extends State<SanBottomNavigation> {
+  BottomNavigationBloc _bottomNavigationBloc;
+  ThemeData _androidTheme;
+  CupertinoThemeData _iosTheme;
 
-  final List<Widget> items = <Widget>[
-    HomePage(),
-    PeoplePage(),
-    VideoPage(),
-    NotificationPage(),
-    UserPage(),
-    SettingPage()
-  ];
+  final List<BottomNavigationBarItem> tabs = navItems.map((List<Widget> item) {
+    return BottomNavigationBarItem(
+      icon: item[ICON_IDX],
+      title: item[TITLE_IDX],
+    );
+  }).toList();
+
+  void _onPressSearch() {
+    print('your menu action here');
+  }
+
+  Widget _searchButton({Brightness brightness, Icon icon}) {
+    if (Platform.isIOS) {
+      return IconButton(
+        iconSize: 32,
+        icon: Icon(
+          CupertinoIcons.search,
+          color: _iosTheme.textTheme.textStyle.color,
+        ),
+        onPressed: _onPressSearch,
+      );
+    }
+    return IconButton(
+      iconSize: 32,
+      icon: Icon(Icons.search),
+      onPressed: _onPressSearch,
+    );
+  }
 
   Widget _ios(BuildContext context) {
-    var theme = CupertinoTheme.of(context);
-
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        backgroundColor: theme.barBackgroundColor,
-        activeColor: theme.textTheme.textStyle.color,
+        backgroundColor: _iosTheme.barBackgroundColor,
+        activeColor: _iosTheme.textTheme.textStyle.color,
         items: tabs,
+        currentIndex: widget._selectedPage,
+        onTap: (int index) {
+          _bottomNavigationBloc.add(BottomNavigationEventImpl(index));
+        },
       ),
-      tabBuilder: (BuildContext context, int index) {
+      tabBuilder: (BuildContext context1, int index) {
         return CupertinoTabView(
-          builder: (BuildContext context1) {
+          builder: (BuildContext context2) {
             return CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
-                middle: Text(APP_TITLE),
                 leading: ThemeSwitch(),
+                middle: Text(
+                  APP_TITLE,
+                  textScaleFactor: 1.0,
+                  style: _iosTheme.textTheme.textStyle.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                trailing: _searchButton(),
               ),
-              child: items[index],
+              child: navItems[index][PAGE_IDX],
             );
           },
         );
@@ -65,7 +104,7 @@ class _SanTabController extends State<SanTabController> {
   }
 
   Widget _android(BuildContext context) {
-    var appBarTheme = Theme.of(context).appBarTheme;
+    var appBarTheme = _androidTheme.appBarTheme;
 
     return DefaultTabController(
       length: tabs.length,
@@ -75,9 +114,20 @@ class _SanTabController extends State<SanTabController> {
         body: Scaffold(
           appBar: AppBar(
             leading: ThemeSwitch(),
-            title: Center(child: Text(APP_TITLE)),
+            actions: <Widget>[
+              _searchButton(),
+            ],
+            title: Center(
+              child: Text(
+                APP_TITLE,
+                textScaleFactor: 1.5,
+                style: appBarTheme.textTheme.title.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
           ),
-          body: items[widget._selectedPage],
+          body: navItems[widget._selectedPage][PAGE_IDX],
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: appBarTheme.color,
             selectedIconTheme: appBarTheme.iconTheme,
@@ -87,9 +137,7 @@ class _SanTabController extends State<SanTabController> {
             type: BottomNavigationBarType.fixed,
             currentIndex: widget._selectedPage,
             onTap: (int index) {
-              setState(() {
-                widget._selectedPage = index;
-              });
+              _bottomNavigationBloc.add(BottomNavigationEventImpl(index));
             },
             items: tabs,
           ),
@@ -99,10 +147,26 @@ class _SanTabController extends State<SanTabController> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
-      return _ios(context);
-    }
-    return _android(context);
+    _bottomNavigationBloc = context.bloc<BottomNavigationBloc>();
+    _iosTheme = CupertinoTheme.of(context);
+    _androidTheme = Theme.of(context);
+
+    return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+      builder: (context1, state) {
+        var _state = state as InitialBottomNavigationState;
+        widget._selectedPage = _state.selectedTab;
+
+        if (Platform.isIOS) {
+          return _ios(context);
+        }
+        return _android(context);
+      },
+    );
   }
 }
