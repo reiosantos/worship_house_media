@@ -19,17 +19,18 @@ dependencies:
     sdk: flutter
 
   intl_translation: ^0.17.9
-  rxdart: ^0.23.1
-  http: ^0.12.0+4
-  bloc: ^3.0.0
-  flutter_bloc: ^3.2.0
+  rxdart: ^0.24.1
+  http: ^0.12.2
+  bloc: ^5.0.1
+  flutter_bloc: ^5.0.1
   json_annotation: '>=3.0.0 <3.1.0'
   shared_preferences: '>=0.5.7+3 <2.0.0'
-  get_it: ^1.0.3
+  get_it: ^4.0.2
   chewie: ^0.9.10
   video_player: '>=0.10.11+1 <2.0.0'
-  google_maps_flutter: ^0.5.11
-  wakelock: ^0.1.4+1
+  google_maps_flutter: ^0.5.28+1
+  wakelock: ^0.1.4+2
+  equatable: ^1.2.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -42,8 +43,8 @@ dev_dependencies:
     sdk: flutter
   test:
   mockito:
-  build_runner: ^1.7.3
-  json_serializable: ^3.2.5
+  build_runner: ^1.10.0
+  json_serializable: ^3.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

@@ -11,15 +11,26 @@ import 'package:whm/src/ui/screens/user.dart';
 import 'package:whm/src/ui/screens/videos.dart';
 import 'package:whm/src/utilities/constants.dart';
 
-final navItems = [
+final _navItems = [
   // [Icon, Title, Page]
   [Icon(Icons.home), Container(), HomePage()],
-  [Icon(Icons.people), Container(), PeoplePage()],
-  [Icon(Icons.video_library), Container(), VideoPage()],
-  [Icon(Icons.notifications), Container(), NotificationPage()],
-  [Icon(Icons.person), Container(), UserPage()],
+  [Icon(Icons.people_outline), Container(), PeoplePage()],
+  [Icon(Icons.ondemand_video), Container(), VideoPage()],
+  [Icon(Icons.notifications_none), Container(), NotificationPage()],
+  [Icon(Icons.person_outline), Container(), UserPage()],
   [Icon(Icons.menu), Container(), SettingPage()],
 ];
+
+final _iosNavItems = [
+  [Icon(CupertinoIcons.home), Container(), HomePage()],
+  [Icon(CupertinoIcons.group), Container(), PeoplePage()],
+  [Icon(CupertinoIcons.play_arrow), Container(), VideoPage()],
+  [Icon(CupertinoIcons.bell), Container(), NotificationPage()],
+  [Icon(CupertinoIcons.profile_circled), Container(), UserPage()],
+  [Icon(CupertinoIcons.ellipsis), Container(), SettingPage()],
+];
+
+final navItems = Platform.isIOS ? _iosNavItems : _navItems;
 
 const ICON_IDX = 0;
 const TITLE_IDX = 1;
@@ -35,6 +46,7 @@ class SanBottomNavigation extends StatefulWidget {
   State<StatefulWidget> createState() => _SanBottomNavigation();
 }
 
+// TODO(reiosantos): implement state cache when changing between tabs, a switch between tabs should maintain previous state if previously visited
 class _SanBottomNavigation extends State<SanBottomNavigation> {
   BottomNavigationBloc _bottomNavigationBloc;
   ThemeData _androidTheme;
@@ -48,6 +60,7 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
   }).toList();
 
   void _onPressSearch() {
+    // TODO(reiosantos): implement search functionality
     print('your menu action here');
   }
 
@@ -121,7 +134,7 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
               child: Text(
                 APP_TITLE,
                 textScaleFactor: 1.5,
-                style: appBarTheme.textTheme.title.copyWith(
+                style: appBarTheme.textTheme.headline6.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
               ),

@@ -1,8 +1,10 @@
 export 'dart:async';
+export 'dart:convert';
 export 'dart:io';
 
 export 'package:bloc/bloc.dart';
 export 'package:chewie/chewie.dart';
+export 'package:equatable/equatable.dart';
 export 'package:flutter/cupertino.dart' hide RefreshCallback;
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';

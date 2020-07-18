@@ -1,5 +1,6 @@
 import 'package:whm/src/index.dart';
 
+// TODO(reiosantos): implement thumbnails for the video player
 class VideoView extends StatefulWidget {
   final String dataSource;
   final bool looping;
@@ -77,8 +78,12 @@ class _VideoView extends State<VideoView> {
 
   @override
   void dispose() {
+    _videoPlayerController.removeListener(_videoPlayerListener);
     _videoPlayerController.dispose();
+
+    _chewieController.removeListener(_chewieListener);
     _chewieController.dispose();
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,

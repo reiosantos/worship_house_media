@@ -41,6 +41,7 @@ class WhmSearchBar extends StatelessWidget {
                       IconButton(
                           icon: Icon(Icons.search, color: SanColors.primary),
                           onPressed: () {
+                            // TODO(reiosantos): implement search functionality on search bar
                             print('your menu action here');
                           })
                     ])))));

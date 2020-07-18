@@ -4,8 +4,10 @@ import './bloc.dart';
 
 class BottomNavigationBloc
     extends Bloc<BottomNavigationEvent, BottomNavigationState> {
-  @override
-  BottomNavigationState get initialState => InitialBottomNavigationState();
+  final BottomNavigationState initialState;
+
+  BottomNavigationBloc({this.initialState})
+      : super(initialState ?? InitialBottomNavigationState());
 
   @override
   Stream<BottomNavigationState> mapEventToState(
