@@ -1,4 +1,4 @@
-import '../../index.dart';
+import 'package:whm/src/index.dart';
 
 @immutable
 abstract class BottomNavigationEvent {}

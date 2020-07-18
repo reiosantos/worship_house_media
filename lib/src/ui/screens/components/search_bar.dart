@@ -1,8 +1,8 @@
 import 'package:whm/src/index.dart';
 import 'package:whm/src/theme/colors.dart';
 
-class WhmSearchBar extends StatelessWidget {
-  const WhmSearchBar(
+class SanSearchBar extends StatelessWidget {
+  const SanSearchBar(
       {@required this.shrinkOffset, @required this.expandedHeight});
 
   final double shrinkOffset;
