@@ -10,7 +10,8 @@ class VideoPost extends Equatable {
   final num views;
   String days_past = '';
 
-  VideoPost({this.author, this.url, this.post_date, this.title, this.views}) {
+  VideoPost(
+      {this.author, this.url, this.post_date, this.title, this.views = 0}) {
     _calculateDaysPast();
   }
 
@@ -63,10 +64,11 @@ class VideoPost extends Equatable {
 
   factory VideoPost.fromJson(Map<String, dynamic> json) {
     return VideoPost(
-      url: json['url'] as String,
       author: json['author'] as String,
       post_date: json['post_date'] as String,
       title: json['title'] as String,
+      views: json['views'] as num,
+      url: json['url'] as String,
     );
   }
 }
