@@ -3,12 +3,12 @@ import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_event.dart';
 import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_state.dart';
 import 'package:whm/src/index.dart';
 import 'package:whm/src/ui/screens/components/theme_switch.dart';
-import 'package:whm/src/ui/screens/home.dart';
-import 'package:whm/src/ui/screens/notifications.dart';
-import 'package:whm/src/ui/screens/people.dart';
-import 'package:whm/src/ui/screens/settings.dart';
-import 'package:whm/src/ui/screens/user.dart';
-import 'package:whm/src/ui/screens/videos.dart';
+import 'package:whm/src/ui/screens/pages/home/home.dart';
+import 'package:whm/src/ui/screens/pages/notifications/notifications.dart';
+import 'package:whm/src/ui/screens/pages/people/people.dart';
+import 'package:whm/src/ui/screens/pages/profile/user.dart';
+import 'package:whm/src/ui/screens/pages/settings/settings.dart';
+import 'package:whm/src/ui/screens/pages/videos/videos.dart';
 import 'package:whm/src/utilities/constants.dart';
 
 final _navItems = [
