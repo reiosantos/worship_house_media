@@ -1,8 +1,11 @@
 import 'package:whm/src/blocs/video_posts/bloc.dart';
 import 'package:whm/src/index.dart';
+import 'package:whm/src/models/VideoPost.dart';
+import 'package:whm/src/providers/navigator_provider.dart';
 import 'package:whm/src/ui/widgets/containers/san_error.dart';
 import 'package:whm/src/ui/widgets/containers/san_loading_container.dart';
 import 'package:whm/src/ui/widgets/video_view/video_view.dart';
+import 'package:whm/src/utilities/constants.dart';
 
 class VideoPage extends StatefulWidget {
   const VideoPage({Key key}) : super(key: key);
@@ -22,10 +25,15 @@ class _VideoPageState extends State<VideoPage> {
     _videoPostsBloc.add(FetchVideoPosts());
   }
 
-  void _openVideoDetails() {
-    // TODO(reiosantos): implement page to show video details
-    print('--- Open Video Details---');
-  }
+  VoidCallback _openVideoDetails(VideoPost videoPost) => () {
+        navigationProvider.navigateToNamed(
+          Routes.VIDEO_DETAILS_ROUTE[0],
+          args: ScreenArguments(
+            Routes.VIDEO_DETAILS_ROUTE[1],
+            extraArgs: <String, dynamic>{'videoPost': videoPost},
+          ),
+        );
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +86,7 @@ class _VideoPageState extends State<VideoPage> {
                           color: subtitleTextStyle.backgroundColor,
                           child: ListTile(
                             title: Text(videoPost.title),
-                            onTap: _openVideoDetails,
+                            onTap: _openVideoDetails(videoPost),
                             subtitle: Padding(
                               padding: EdgeInsets.only(top: 10),
                               child: Column(

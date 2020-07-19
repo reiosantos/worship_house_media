@@ -9,13 +9,15 @@ enum ThemeSwitchMode { LIGHT, DARK, SYSTEM }
 
 class ScreenArguments {
   final String title;
+  final Map<String, dynamic> extraArgs;
 
-  ScreenArguments(this.title);
+  ScreenArguments(this.title, {this.extraArgs});
 }
 
 class Routes {
   static const List<String> HOME_ROUTE = ['/home', 'Home'];
   static const List<String> LOGIN_ROUTE = ['/login', 'Login'];
+  static const List<String> VIDEO_DETAILS_ROUTE = ['/video/details', 'Details'];
 }
 
 const num DAYS_IN_A_YEAR = 356; // average number
