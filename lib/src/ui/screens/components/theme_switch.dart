@@ -18,17 +18,18 @@ class _ThemeSwitch extends State<ThemeSwitch> with WidgetsBindingObserver {
   List<Map<String, dynamic>> items = [
     <String, dynamic>{
       'text': 'Light',
-      'icon': Icons.brightness_5,
+      'icon': Platform.isIOS ? CupertinoIcons.brightness : Icons.brightness_5,
       'value': ThemeSwitchMode.LIGHT
     },
     <String, dynamic>{
       'text': 'Dark',
-      'icon': Icons.brightness_2,
+      'icon':
+          Platform.isIOS ? CupertinoIcons.brightness_solid : Icons.brightness_2,
       'value': ThemeSwitchMode.DARK
     },
     <String, dynamic>{
       'text': 'System',
-      'icon': Icons.settings,
+      'icon': Platform.isIOS ? CupertinoIcons.gear : Icons.settings,
       'value': ThemeSwitchMode.SYSTEM
     },
   ];
@@ -111,7 +112,7 @@ class _ThemeSwitch extends State<ThemeSwitch> with WidgetsBindingObserver {
       textStyle = CupertinoTheme.of(context).textTheme.textStyle;
     } else {
       backgroundColor = Theme.of(context).appBarTheme.color;
-      textStyle = Theme.of(context).appBarTheme.textTheme.title;
+      textStyle = Theme.of(context).appBarTheme.textTheme.headline6;
     }
 
     return GestureDetector(
@@ -127,7 +128,7 @@ class _ThemeSwitch extends State<ThemeSwitch> with WidgetsBindingObserver {
         color: backgroundColor,
         tooltip: 'Theme Switch',
         onSelected: _onSelectTheme,
-        icon: Icon(Icons.lightbulb_outline, color: textStyle.color),
+        icon: Icon(Icons.lightbulb_outline, color: textStyle.color, size: 20),
         itemBuilder: (BuildContext context) {
           return items.map((Map<String, dynamic> item) {
             return PopupMenuItem<ThemeSwitchMode>(

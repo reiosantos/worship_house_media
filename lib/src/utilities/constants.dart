@@ -18,6 +18,7 @@ class Routes {
   static const List<String> HOME_ROUTE = ['/home', 'Home'];
   static const List<String> LOGIN_ROUTE = ['/login', 'Login'];
   static const List<String> VIDEO_DETAILS_ROUTE = ['/video/details', 'Details'];
+  static const List<String> SEARCH_ROUTE = ['/search', 'Search'];
 }
 
 const num DAYS_IN_A_YEAR = 356; // average number

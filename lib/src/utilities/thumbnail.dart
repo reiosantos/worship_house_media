@@ -1,6 +1,6 @@
 import 'package:whm/src/index.dart';
-import 'package:whm/src/ui/widgets/containers/san_error.dart';
-import 'package:whm/src/ui/widgets/containers/san_loading_container.dart';
+import 'package:whm/src/ui/widgets/error/error.dart';
+import 'package:whm/src/ui/widgets/loader/loader.dart';
 
 class ThumbnailRequest {
   final String video;
@@ -119,9 +119,9 @@ class _GenThumbnailImageState extends State<GenThumbnailImage> {
           if (snapshot.error is PlatformException) {
             message = 'Cant display thumbnail for video.';
           }
-          return SanErrorContainer(message);
+          return ErrorContainer(message);
         } else {
-          return SanLoadingContainer();
+          return LoadingSpinner();
         }
       },
     );

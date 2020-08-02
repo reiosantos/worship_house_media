@@ -1,12 +1,12 @@
 import 'package:whm/src/index.dart';
 import 'package:whm/src/ui/widgets/buttons/raised.dart';
-import 'package:whm/src/ui/widgets/containers/san_accented_text.dart';
+import 'package:whm/src/ui/widgets/text/accented_text.dart';
 
-class SanErrorContainer extends StatelessWidget {
+class ErrorContainer extends StatelessWidget {
   final String error;
   final Icon icon;
   final VoidCallback refreshHandler;
-  SanErrorContainer(this.error, {this.icon, this.refreshHandler});
+  ErrorContainer(this.error, {this.icon, this.refreshHandler});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class SanErrorContainer extends StatelessWidget {
               ),
           Padding(
             padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-            child: SanAccentedText(error),
+            child: AccentedText(error),
           ),
           refreshHandler != null
               ? SanRaisedButton('Push to Refresh.', refreshHandler)

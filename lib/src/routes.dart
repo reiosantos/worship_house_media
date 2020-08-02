@@ -3,6 +3,7 @@ import 'package:whm/src/models/VideoPost.dart';
 import 'package:whm/src/ui/screens/components/platform_wrapper.dart';
 import 'package:whm/src/ui/screens/pages/home/home.dart';
 import 'package:whm/src/ui/screens/pages/route_not_found.dart';
+import 'package:whm/src/ui/screens/pages/search/search.dart';
 import 'package:whm/src/ui/screens/pages/videos/video_details.dart';
 import 'package:whm/src/utilities/constants.dart';
 
@@ -39,4 +40,5 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   Routes.HOME_ROUTE[0]: (BuildContext context) =>
       _wrapper(HomePage(), title: Routes.HOME_ROUTE[1]),
+  Routes.SEARCH_ROUTE[0]: (BuildContext context) => _wrapper(SearchPage())
 };

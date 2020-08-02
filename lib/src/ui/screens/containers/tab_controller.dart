@@ -2,6 +2,7 @@ import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_event.dart';
 import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_state.dart';
 import 'package:whm/src/index.dart';
+import 'package:whm/src/providers/navigator_provider.dart';
 import 'package:whm/src/ui/screens/components/theme_switch.dart';
 import 'package:whm/src/ui/screens/pages/home/home.dart';
 import 'package:whm/src/ui/screens/pages/notifications/notifications.dart';
@@ -60,24 +61,30 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
   }).toList();
 
   void _onPressSearch() {
-    // TODO(reiosantos): implement search functionality
-    print('your menu action here');
+    navigationProvider.navigateToNamed(
+      Routes.SEARCH_ROUTE[0],
+      args: ScreenArguments(Routes.SEARCH_ROUTE[1]),
+    );
   }
 
   Widget _searchButton({Brightness brightness, Icon icon}) {
     if (Platform.isIOS) {
-      return IconButton(
-        iconSize: 32,
-        icon: Icon(
+      return CupertinoButton(
+        padding: EdgeInsets.all(0),
+        child: Icon(
           CupertinoIcons.search,
+          size: 22,
           color: _iosTheme.textTheme.textStyle.color,
         ),
         onPressed: _onPressSearch,
       );
     }
     return IconButton(
-      iconSize: 32,
-      icon: Icon(Icons.search),
+      padding: EdgeInsets.all(0),
+      icon: Icon(
+        Icons.search,
+        size: 22,
+      ),
       onPressed: _onPressSearch,
     );
   }

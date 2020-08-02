@@ -1,10 +1,10 @@
 import 'package:whm/src/index.dart';
-import 'package:whm/src/ui/widgets/containers/san_accented_text.dart';
 import 'package:whm/src/ui/widgets/progress/san_circular_progress.dart';
+import 'package:whm/src/ui/widgets/text/accented_text.dart';
 
-class SanLoadingContainer extends StatelessWidget {
+class LoadingSpinner extends StatelessWidget {
   final String message;
-  SanLoadingContainer({this.message = 'Loading...'});
+  LoadingSpinner({this.message = 'Loading...'});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class SanLoadingContainer extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(bottom: 20.0),
-            child: SanAccentedText(message),
+            child: AccentedText(message),
           ),
           SanCircularProgress(),
         ],

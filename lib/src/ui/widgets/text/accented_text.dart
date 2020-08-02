@@ -1,9 +1,9 @@
 import 'package:whm/src/index.dart';
 import 'package:whm/src/theme/colors.dart';
 
-class SanAccentedText extends StatelessWidget {
+class AccentedText extends StatelessWidget {
   final String message;
-  SanAccentedText(this.message);
+  AccentedText(this.message);
 
   @override
   Widget build(BuildContext context) {

@@ -2,8 +2,8 @@ import 'package:whm/src/blocs/video_posts/bloc.dart';
 import 'package:whm/src/index.dart';
 import 'package:whm/src/models/VideoPost.dart';
 import 'package:whm/src/providers/navigator_provider.dart';
-import 'package:whm/src/ui/widgets/containers/san_error.dart';
-import 'package:whm/src/ui/widgets/containers/san_loading_container.dart';
+import 'package:whm/src/ui/widgets/error/error.dart';
+import 'package:whm/src/ui/widgets/loader/loader.dart';
 import 'package:whm/src/utilities/constants.dart';
 import 'package:whm/src/utilities/thumbnail.dart';
 
@@ -59,7 +59,7 @@ class _VideoPageState extends State<VideoPage> {
         }
 
         if (state is VideoPostsError) {
-          return SanErrorContainer(
+          return ErrorContainer(
             state.error,
             refreshHandler: _refreshOnError,
           );
@@ -130,7 +130,7 @@ class _VideoPageState extends State<VideoPage> {
           );
         }
 
-        return SanLoadingContainer();
+        return LoadingSpinner();
       },
     );
   }
