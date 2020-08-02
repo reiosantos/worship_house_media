@@ -16,7 +16,7 @@ class VideoPostsService extends HttpService {
 //    final data = json['data'];
 //    return data.map((e) => VideoPost.fromJson(e)).toList();
 
-    await Future<dynamic>.delayed(Duration(seconds: 2));
+//    await Future<dynamic>.delayed(Duration(seconds: 2));
 
     final posts = <Map<String, dynamic>>[
       <String, dynamic>{
@@ -49,7 +49,7 @@ class VideoPostsService extends HttpService {
         'title': 'Celebrity Sunday 2',
         'views': 321,
         'url':
-            'http://mirrors.standaloneinstaller.com/video-sample/dolbycanyon.3gp',
+            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
       },
       <String, dynamic>{
         'author': 'Pr. Bugembe',
@@ -57,7 +57,7 @@ class VideoPostsService extends HttpService {
         'title': 'Celebrity Sunday 3',
         'views': 321,
         'url':
-            'http://mirrors.standaloneinstaller.com/video-sample/dolbycanyon.3gp',
+            'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
       },
       <String, dynamic>{
         'author': 'Pr. Bugembe',
@@ -65,7 +65,7 @@ class VideoPostsService extends HttpService {
         'title': 'Celebrity Sunday 4',
         'views': 321,
         'url':
-            'http://mirrors.standaloneinstaller.com/video-sample/dolbycanyon.3gp',
+            'https://flutter.github.io/assets-for-api-docs/assets/widgets/align_transition.mp4',
       },
     ];
 
