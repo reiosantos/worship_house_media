@@ -1,3 +1,4 @@
+import 'package:whm/src/blocs/theme/bloc.dart';
 import 'package:whm/src/index.dart';
 import 'package:whm/src/providers/navigator_provider.dart';
 import 'package:whm/src/ui/screens/components/theme_switch.dart';
@@ -47,6 +48,8 @@ class SanBottomNavigation extends StatefulWidget {
 }
 
 class _SanBottomNavigation extends State<SanBottomNavigation> {
+  bool hasInitializedBrightness = false;
+  ThemeBloc _themeBloc;
   ThemeData _androidTheme;
   CupertinoThemeData _iosTheme;
   PageController pageController = PageController();
@@ -178,6 +181,21 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
     );
   }
 
+  void _setupTheme(Brightness _brightness) {
+    _themeBloc.getOption().then((int value) {
+      if (value == null || value == ThemeSwitchMode.SYSTEM.index) {
+        _themeBloc.add(SystemTheme(_brightness));
+      } else {
+        // User already selected the theme, use the current selection
+        if (value == ThemeSwitchMode.LIGHT.index) {
+          _themeBloc.add(LightTheme());
+        } else {
+          _themeBloc.add(DarkTheme());
+        }
+      }
+    });
+  }
+
   @override
   void dispose() {
     pageController.dispose();
@@ -188,6 +206,12 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
   Widget build(BuildContext context) {
     _iosTheme = CupertinoTheme.of(context);
     _androidTheme = Theme.of(context);
+    _themeBloc = context.bloc<ThemeBloc>();
+
+    if (!hasInitializedBrightness) {
+      hasInitializedBrightness = true;
+      _setupTheme(MediaQuery.of(context).platformBrightness);
+    }
 
     if (Platform.isIOS) {
       return _ios(context);

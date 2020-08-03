@@ -14,6 +14,10 @@ class NavigationProvider {
       return navigatorKey.currentState.pop();
     }
   }
+
+  void pop() {
+    goBack();
+  }
 }
 
 // Use this to navigate to any page in the app, Avoid using the default Navigator utilities

@@ -13,7 +13,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) async* {
     if (event is LightTheme) {
-      yield ChangeThemeState.lightTheme();
+      yield ChangeThemeState.lightTheme(event: event);
 
       try {
         await _saveOptionValue(ThemeSwitchMode.LIGHT.index);
@@ -23,7 +23,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     }
 
     if (event is DarkTheme) {
-      yield ChangeThemeState.darkTheme();
+      yield ChangeThemeState.darkTheme(event: event);
 
       try {
         await _saveOptionValue(ThemeSwitchMode.DARK.index);
@@ -34,9 +34,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
     if (event is SystemTheme) {
       if (event.brightness == Brightness.dark) {
-        yield ChangeThemeState.darkTheme();
+        yield ChangeThemeState.darkTheme(event: event);
       } else {
-        yield ChangeThemeState.lightTheme();
+        yield ChangeThemeState.lightTheme(event: event);
       }
 
       try {

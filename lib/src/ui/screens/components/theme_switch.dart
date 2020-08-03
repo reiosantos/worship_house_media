@@ -1,19 +1,19 @@
 import 'package:whm/src/blocs/theme/bloc.dart';
 import 'package:whm/src/index.dart';
+import 'package:whm/src/providers/navigator_provider.dart';
+import 'package:whm/src/theme/colors.dart';
 import 'package:whm/src/utilities/constants.dart';
 
-class ThemeSwitch extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _ThemeSwitch();
-}
-
-class _ThemeSwitch extends State<ThemeSwitch> with WidgetsBindingObserver {
-  final GlobalKey _menuKey = GlobalKey();
+// ignore: must_be_immutable
+class ThemeSwitch extends StatelessWidget {
   ThemeBloc _themeBloc;
-  Brightness _brightness;
-
+  Brightness _platformBrightness;
   ThemeSwitchMode _selectedTheme;
-  bool _themeSelected = false;
+
+  Color backgroundColor;
+  TextStyle textStyle;
+  TextStyle subtitleTextStyle;
+  double subtitleFont = 13.0;
 
   List<Map<String, dynamic>> items = [
     <String, dynamic>{
@@ -34,122 +34,144 @@ class _ThemeSwitch extends State<ThemeSwitch> with WidgetsBindingObserver {
     },
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangePlatformBrightness() {
-    setState(() {
-      _themeSelected = false;
-    });
-  }
-
   void _onSelectTheme(ThemeSwitchMode mode) {
-    setState(() {
-      _selectedTheme = mode;
-    });
     switch (mode) {
       case ThemeSwitchMode.DARK:
-        return _themeBloc.add(DarkTheme());
+        _themeBloc.add(DarkTheme());
+        break;
       case ThemeSwitchMode.LIGHT:
-        return _themeBloc.add(LightTheme());
+        _themeBloc.add(LightTheme());
+        break;
       case ThemeSwitchMode.SYSTEM:
-        return _themeBloc.add(SystemTheme(_brightness));
+        _themeBloc.add(SystemTheme(_platformBrightness));
+        break;
       default:
-        return _themeBloc.add(LightTheme());
+        _themeBloc.add(LightTheme());
+        break;
+    }
+    navigationProvider.pop();
+  }
+
+  void _setSelectedTheme(ChangeThemeState state) {
+    var evt = state.themeEvent;
+    if (evt is LightTheme) {
+      _selectedTheme = ThemeSwitchMode.LIGHT;
+    }
+    if (evt is DarkTheme) {
+      _selectedTheme = ThemeSwitchMode.DARK;
+    }
+    if (evt is SystemTheme) {
+      _selectedTheme = ThemeSwitchMode.SYSTEM;
     }
   }
 
-  void _setupTheme() {
-    _themeBloc.getOption().then((int value) {
-      if (value == null || value == ThemeSwitchMode.SYSTEM.index) {
-        _themeBloc.add(SystemTheme(_brightness));
-      } else {
-        // User already selected the theme, use the current selection
-        if (value == ThemeSwitchMode.LIGHT.index) {
-          _themeBloc.add(LightTheme());
-        } else {
-          _themeBloc.add(DarkTheme());
-        }
-      }
+  List<Widget> _getThemeWidget(BuildContext context) {
+    return items.map((Map<String, dynamic> item) {
+      var theme = item;
+      final value = theme['value'] as ThemeSwitchMode;
 
-      setState(() {
-        if (value == ThemeSwitchMode.LIGHT.index) {
-          _selectedTheme = ThemeSwitchMode.LIGHT;
-        } else if (value == ThemeSwitchMode.DARK.index) {
-          _selectedTheme = ThemeSwitchMode.DARK;
-        } else {
-          _selectedTheme = ThemeSwitchMode.SYSTEM;
-        }
-        _themeSelected = true;
-      });
-    });
+      return ListTileTheme(
+        dense: true,
+        style: ListTileStyle.list,
+        textColor: subtitleTextStyle.color,
+        iconColor: subtitleTextStyle.color,
+        selectedColor: SanColors.accentColor,
+        child: ListTile(
+          onTap: () => _onSelectTheme(value),
+          title: Text(theme['text'] as String, style: textStyle),
+          leading: Theme(
+            data: Theme.of(context).copyWith(
+              unselectedWidgetColor: textStyle.color.withOpacity(0.5),
+            ),
+            child: Radio<ThemeSwitchMode>(
+              activeColor: SanColors.accentColor,
+              value: value,
+              groupValue: _selectedTheme,
+              onChanged: _onSelectTheme,
+            ),
+          ),
+          trailing: Icon(
+            item['icon'] as IconData,
+            color: textStyle.color,
+            size: textStyle.fontSize,
+          ),
+        ),
+      );
+    }).toList();
+  }
+
+  void _showThemeDialog(BuildContext context) {
+    if (Platform.isIOS) {
+      showCupertinoModalPopup<dynamic>(
+          context: context,
+          builder: (BuildContext ctx) {
+            return CupertinoActionSheet(
+              title: Text('Choose Theme', style: textStyle),
+              actions: _getThemeWidget(context),
+            );
+          });
+    } else {
+      showModalBottomSheet<dynamic>(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (BuildContext ctx) {
+          return SafeArea(
+            child: Container(
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text(
+                      'Choose Theme',
+                      style: textStyle.copyWith(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                  ..._getThemeWidget(context)
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     _themeBloc = context.bloc<ThemeBloc>();
-    _brightness = MediaQuery.of(context).platformBrightness;
-
-    if (!_themeSelected) {
-      _setupTheme();
-    }
-
-    Color backgroundColor;
-    TextStyle textStyle;
+    _platformBrightness = MediaQuery.of(context).platformBrightness;
+    var state = _themeBloc.state as ChangeThemeState;
 
     if (Platform.isIOS) {
       backgroundColor = CupertinoTheme.of(context).barBackgroundColor;
       textStyle = CupertinoTheme.of(context).textTheme.textStyle;
+      subtitleTextStyle = CupertinoTheme.of(context).textTheme.textStyle;
     } else {
       backgroundColor = Theme.of(context).appBarTheme.color;
       textStyle = Theme.of(context).appBarTheme.textTheme.headline6;
+      subtitleTextStyle = Theme.of(context).textTheme.bodyText2;
     }
 
-    return GestureDetector(
-      onTapDown: (TapDownDetails t) {
-        dynamic state = _menuKey.currentState;
-        state.showButtonMenu();
-      },
-      child: PopupMenuButton<ThemeSwitchMode>(
-        key: _menuKey,
-        elevation: 4,
-        initialValue: _selectedTheme,
-        padding: EdgeInsets.all(0.0),
-        color: backgroundColor,
-        tooltip: 'Theme Switch',
-        onSelected: _onSelectTheme,
-        icon: Icon(Icons.lightbulb_outline, color: textStyle.color, size: 20),
-        itemBuilder: (BuildContext context) {
-          return items.map((Map<String, dynamic> item) {
-            return PopupMenuItem<ThemeSwitchMode>(
-              textStyle: textStyle,
-              value: item['value'] as ThemeSwitchMode,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(item['text'] as String),
-                  Spacer(),
-                  Icon(
-                    item['icon'] as IconData,
-                    color: textStyle.color,
-                    size: textStyle.fontSize,
-                  ),
-                ],
-              ),
-            );
-          }).toList();
-        },
-      ),
+    subtitleTextStyle = subtitleTextStyle.copyWith(
+      fontSize: subtitleFont,
+      backgroundColor: backgroundColor,
+    );
+
+    _setSelectedTheme(state);
+
+    return IconButton(
+      onPressed: () => _showThemeDialog(context),
+      icon: Icon(Icons.lightbulb_outline, color: textStyle.color, size: 20),
     );
   }
 }
