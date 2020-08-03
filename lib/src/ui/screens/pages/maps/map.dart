@@ -7,9 +7,11 @@ class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -19,4 +21,7 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

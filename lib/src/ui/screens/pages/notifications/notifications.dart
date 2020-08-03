@@ -7,9 +7,12 @@ class NotificationPage extends StatefulWidget {
   _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage> {
+class _NotificationPageState extends State<NotificationPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -19,4 +22,7 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

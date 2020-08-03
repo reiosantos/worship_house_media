@@ -14,7 +14,8 @@ class VideoPage extends StatefulWidget {
   _VideoPageState createState() => _VideoPageState();
 }
 
-class _VideoPageState extends State<VideoPage> {
+class _VideoPageState extends State<VideoPage>
+    with AutomaticKeepAliveClientMixin {
   VideoPostsBloc _videoPostsBloc = VideoPostsBloc();
 
   void _refreshOnError() {
@@ -37,6 +38,8 @@ class _VideoPageState extends State<VideoPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     var subtitleTextStyle = Theme.of(context).textTheme.bodyText2;
     Color backgroundColor;
     var subtitleFont = 13.0;
@@ -134,4 +137,7 @@ class _VideoPageState extends State<VideoPage> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

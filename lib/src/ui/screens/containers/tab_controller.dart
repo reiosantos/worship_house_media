@@ -1,6 +1,3 @@
-import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_bloc.dart';
-import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_event.dart';
-import 'package:whm/src/blocs/bottom_navigation/bottom_navigation_state.dart';
 import 'package:whm/src/index.dart';
 import 'package:whm/src/providers/navigator_provider.dart';
 import 'package:whm/src/ui/screens/components/theme_switch.dart';
@@ -12,52 +9,52 @@ import 'package:whm/src/ui/screens/pages/settings/settings.dart';
 import 'package:whm/src/ui/screens/pages/videos/videos.dart';
 import 'package:whm/src/utilities/constants.dart';
 
-final _navItems = [
-  // [Icon, Title, Page]
-  [Icon(Icons.home), Container(), HomePage()],
-  [Icon(Icons.people_outline), Container(), PeoplePage()],
-  [Icon(Icons.ondemand_video), Container(), VideoPage()],
-  [Icon(Icons.notifications_none), Container(), NotificationPage()],
-  [Icon(Icons.person_outline), Container(), UserPage()],
-  [Icon(Icons.menu), Container(), SettingPage()],
+final _navIcons = [
+  Icon(Icons.home),
+  Icon(Icons.people_outline),
+  Icon(Icons.ondemand_video),
+  Icon(Icons.notifications_none),
+  Icon(Icons.person_outline),
+  Icon(Icons.menu),
 ];
 
-final _iosNavItems = [
-  [Icon(CupertinoIcons.home), Container(), HomePage()],
-  [Icon(CupertinoIcons.group), Container(), PeoplePage()],
-  [Icon(CupertinoIcons.play_arrow), Container(), VideoPage()],
-  [Icon(CupertinoIcons.bell), Container(), NotificationPage()],
-  [Icon(CupertinoIcons.profile_circled), Container(), UserPage()],
-  [Icon(CupertinoIcons.ellipsis), Container(), SettingPage()],
+final _iosNavIcons = [
+  Icon(CupertinoIcons.home),
+  Icon(CupertinoIcons.group),
+  Icon(CupertinoIcons.play_arrow),
+  Icon(CupertinoIcons.bell),
+  Icon(CupertinoIcons.profile_circled),
+  Icon(CupertinoIcons.ellipsis),
 ];
 
-final navItems = Platform.isIOS ? _iosNavItems : _navItems;
+final List<Widget> navPages = [
+  HomePage(),
+  PeoplePage(),
+  VideoPage(),
+  NotificationPage(),
+  UserPage(),
+  SettingPage()
+];
 
-const ICON_IDX = 0;
-const TITLE_IDX = 1;
-const PAGE_IDX = 2;
+final navIcons = Platform.isIOS ? _iosNavIcons : _navIcons;
 
 // ignore: must_be_immutable
 class SanBottomNavigation extends StatefulWidget {
   SanBottomNavigation({Key key}) : super(key: key);
 
-  int _selectedPage;
-
   @override
   State<StatefulWidget> createState() => _SanBottomNavigation();
 }
 
-// TODO(reiosantos): implement state cache when changing between tabs, a switch between tabs should maintain previous state if previously visited
 class _SanBottomNavigation extends State<SanBottomNavigation> {
-  BottomNavigationBloc _bottomNavigationBloc;
   ThemeData _androidTheme;
   CupertinoThemeData _iosTheme;
+  PageController pageController = PageController();
 
-  final List<BottomNavigationBarItem> tabs = navItems.map((List<Widget> item) {
-    return BottomNavigationBarItem(
-      icon: item[ICON_IDX],
-      title: item[TITLE_IDX],
-    );
+  int currentIndex = 0;
+
+  final List<BottomNavigationBarItem> tabs = navIcons.map((Widget icon) {
+    return BottomNavigationBarItem(icon: icon, title: Container());
   }).toList();
 
   void _onPressSearch() {
@@ -65,6 +62,20 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
       Routes.SEARCH_ROUTE[0],
       args: ScreenArguments(Routes.SEARCH_ROUTE[1]),
     );
+  }
+
+  void onTap(int index) {
+    pageController.jumpToPage(index);
+  }
+
+  void iosOnTap(int index) {
+    onPageChanged(index);
+  }
+
+  void onPageChanged(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 
   Widget _searchButton({Brightness brightness, Icon icon}) {
@@ -95,10 +106,8 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
         backgroundColor: _iosTheme.barBackgroundColor,
         activeColor: _iosTheme.textTheme.textStyle.color,
         items: tabs,
-        currentIndex: widget._selectedPage,
-        onTap: (int index) {
-          _bottomNavigationBloc.add(BottomNavigationEventImpl(index));
-        },
+        currentIndex: currentIndex,
+        onTap: iosOnTap,
       ),
       tabBuilder: (BuildContext context1, int index) {
         return CupertinoTabView(
@@ -115,7 +124,7 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
                 ),
                 trailing: _searchButton(),
               ),
-              child: navItems[index][PAGE_IDX],
+              child: navPages[index],
             );
           },
         );
@@ -147,7 +156,12 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
               ),
             ),
           ),
-          body: navItems[widget._selectedPage][PAGE_IDX],
+          body: PageView(
+            controller: pageController,
+            children: navPages,
+            onPageChanged: onPageChanged,
+            physics: NeverScrollableScrollPhysics(),
+          ),
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: appBarTheme.color,
             selectedIconTheme: appBarTheme.iconTheme,
@@ -155,10 +169,8 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
               color: Colors.grey,
             ),
             type: BottomNavigationBarType.fixed,
-            currentIndex: widget._selectedPage,
-            onTap: (int index) {
-              _bottomNavigationBloc.add(BottomNavigationEventImpl(index));
-            },
+            currentIndex: currentIndex,
+            onTap: onTap,
             items: tabs,
           ),
         ),
@@ -168,25 +180,18 @@ class _SanBottomNavigation extends State<SanBottomNavigation> {
 
   @override
   void dispose() {
+    pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _bottomNavigationBloc = context.bloc<BottomNavigationBloc>();
     _iosTheme = CupertinoTheme.of(context);
     _androidTheme = Theme.of(context);
 
-    return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
-      builder: (context1, state) {
-        var _state = state as InitialBottomNavigationState;
-        widget._selectedPage = _state.selectedTab;
-
-        if (Platform.isIOS) {
-          return _ios(context);
-        }
-        return _android(context);
-      },
-    );
+    if (Platform.isIOS) {
+      return _ios(context);
+    }
+    return _android(context);
   }
 }

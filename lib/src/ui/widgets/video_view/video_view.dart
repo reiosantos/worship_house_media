@@ -1,6 +1,6 @@
 import 'package:whm/src/index.dart';
 
-// TODO(reiosantos): implement thumbnails for the video player
+
 class VideoView extends StatefulWidget {
   final String dataSource;
   final bool looping;

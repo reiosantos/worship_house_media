@@ -7,9 +7,12 @@ class PeoplePage extends StatefulWidget {
   _PeoplePageState createState() => _PeoplePageState();
 }
 
-class _PeoplePageState extends State<PeoplePage> {
+class _PeoplePageState extends State<PeoplePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -19,4 +22,7 @@ class _PeoplePageState extends State<PeoplePage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
