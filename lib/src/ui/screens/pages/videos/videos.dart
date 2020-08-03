@@ -19,7 +19,6 @@ class _VideoPageState extends State<VideoPage>
   VideoPostsBloc _videoPostsBloc = VideoPostsBloc();
 
   void _refreshOnError() {
-    // TODO(santos): optimize, it freezes the screen
     _videoPostsBloc.add(FetchVideoPosts());
   }
 

@@ -76,11 +76,7 @@ target 'Runner' do
     File.symlink(path, symlink)
     pod name, :path => File.join(symlink, 'ios')
   end
-  pod 'GoogleMaps'
 end
-
-# Prevent Cocoapods from embedding a second Flutter framework and causing an error with the new Xcode build system.
-install! 'cocoapods', :disable_input_output_paths => true
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|

@@ -11,5 +11,5 @@ abstract class VideoPostsEvent extends Equatable {
 
 class FetchVideoPosts extends VideoPostsEvent {
   @override
-  String toString() => 'Update Video Post Event';
+  String toString() => 'Fetch Video Post Event';
 }
