@@ -4,8 +4,8 @@ import 'package:whm/src/models/VideoPost.dart';
 import 'package:whm/src/providers/navigator_provider.dart';
 import 'package:whm/src/ui/widgets/error/error.dart';
 import 'package:whm/src/ui/widgets/loader/loader.dart';
+import 'package:whm/src/ui/widgets/thumbnail/thumbnail.dart';
 import 'package:whm/src/utilities/constants.dart';
-import 'package:whm/src/utilities/thumbnail.dart';
 
 class VideoPage extends StatefulWidget {
   const VideoPage({Key key}) : super(key: key);
