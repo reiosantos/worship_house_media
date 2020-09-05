@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:whm/src/index.dart';
 import 'package:whm/src/ui/widgets/error/error.dart';
 import 'package:whm/src/ui/widgets/loader/loader.dart';
@@ -28,11 +30,35 @@ class _ThumbnailResult {
   final int dataSize;
   final int height;
   final int width;
+
   const _ThumbnailResult({this.image, this.dataSize, this.height, this.width});
 }
 
+Future<String> _thumbnailFile(Map<String, dynamic> r) {
+  return VideoThumbnail.thumbnailFile(
+    video: r['video'] as String,
+    thumbnailPath: r['thumbnailPath'] as String,
+    imageFormat: r['imageFormat'] as ImageFormat,
+    maxHeight: r['maxHeight'] as int,
+    maxWidth: r['maxWidth'] as int,
+    timeMs: r['timeMs'] as int,
+    quality: r['quality'] as int,
+  );
+}
+
+Future<Uint8List> _thumbnailData(Map<String, dynamic> r) {
+  return VideoThumbnail.thumbnailData(
+    video: r['video'] as String,
+    imageFormat: r['imageFormat'] as ImageFormat,
+    maxHeight: r['maxHeight'] as int,
+    maxWidth: r['maxWidth'] as int,
+    timeMs: r['timeMs'] as int,
+    quality: r['quality'] as int,
+  );
+}
+
 Future<_ThumbnailResult> _genThumbnail(ThumbnailRequest r) async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   Uint8List bytes;
   final completer = Completer<_ThumbnailResult>();
 
@@ -51,28 +77,29 @@ Future<_ThumbnailResult> _genThumbnail(ThumbnailRequest r) async {
     var thumbnailPath = '${thumbnails_dir.path}/${fileName}';
     final fileExists = await File(thumbnailPath).exists();
 
-    if (!fileExists) {
-      thumbnailPath = await VideoThumbnail.thumbnailFile(
-        video: r.video,
-        thumbnailPath: thumbnails_dir.path,
-        imageFormat: r.imageFormat,
-        maxHeight: r.maxHeight,
-        maxWidth: r.maxWidth,
-        timeMs: r.timeMs,
-        quality: r.quality,
-      );
+    if (fileExists == false) {
+      thumbnailPath = await compute(_thumbnailFile, {
+        'video': r.video,
+        'thumbnailPath': thumbnails_dir.path,
+        'imageFormat': r.imageFormat,
+        'maxHeight': r.maxHeight,
+        'maxWidth': r.maxWidth,
+        'timeMs': r.timeMs,
+        'quality': r.quality,
+      });
     }
 
     final file = File(thumbnailPath);
     bytes = file.readAsBytesSync();
   } else {
-    bytes = await VideoThumbnail.thumbnailData(
-        video: r.video,
-        imageFormat: r.imageFormat,
-        maxHeight: r.maxHeight,
-        maxWidth: r.maxWidth,
-        timeMs: r.timeMs,
-        quality: r.quality);
+    bytes = await Isolate.spawn(_thumbnailData, {
+      'video': r.video,
+      'imageFormat': r.imageFormat,
+      'maxHeight': r.maxHeight,
+      'maxWidth': r.maxWidth,
+      'timeMs': r.timeMs,
+      'quality': r.quality,
+    }) as Uint8List;
   }
 
   var _imageDataSize = bytes.length;
@@ -106,23 +133,25 @@ class _GenThumbnailImageState extends State<GenThumbnailImage> {
     return FutureBuilder<_ThumbnailResult>(
       future: _genThumbnail(widget.thumbnailRequest),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          final _image = snapshot.data.image as Image;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[_image],
-          );
-        } else if (snapshot.hasError) {
-          var message = snapshot.error.toString();
-
-          if (snapshot.error is PlatformException) {
-            message = 'Cant display thumbnail for video.';
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            final _image = snapshot.data.image as Image;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[_image],
+            );
           }
-          return ErrorContainer(message);
-        } else {
-          return LoadingSpinner();
+          if (snapshot.hasError) {
+            var message = snapshot.error.toString();
+
+            if (snapshot.error is PlatformException) {
+              message = 'Cant display thumbnail for video.';
+            }
+            return ErrorContainer(message);
+          }
         }
+        return LoadingSpinner();
       },
     );
   }

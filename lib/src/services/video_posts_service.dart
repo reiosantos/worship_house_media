@@ -24,6 +24,8 @@ class VideoPostsService extends HttpService {
         'post_date': '2017-02-20T12:30+0300',
         'title': "God's General Gathering (G3). My Nigga",
         'views': 1000,
+        'thumbnail':
+            'https://flutter.github.io/assets-for-api-docs/assets/dart-ui/blend_mode_color.png',
         'url':
             'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
       },
@@ -32,6 +34,8 @@ class VideoPostsService extends HttpService {
         'post_date': '2019-02-20T12:30+0300',
         'title': 'Jesus Worship Night reloaded',
         'views': 156,
+        'thumbnail':
+            'https://flutter.github.io/assets-for-api-docs/assets/dart-ui/blend_mode_colorBurn.png',
         'url':
             'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       },
@@ -40,6 +44,8 @@ class VideoPostsService extends HttpService {
         'post_date': '2020-02-20T12:30+0300',
         'title': 'Celebrity Sunday 1',
         'views': 321,
+        'thumbnail':
+            'https://flutter.github.io/assets-for-api-docs/assets/dart-ui/blend_mode_dstOut.png',
         'url':
             'http://mirrors.standaloneinstaller.com/video-sample/dolbycanyon.3gp',
       },
@@ -48,6 +54,8 @@ class VideoPostsService extends HttpService {
         'post_date': '2020-07-16T12:30+0300',
         'title': 'Celebrity Sunday 2',
         'views': 321,
+        'thumbnail':
+            'https://flutter.github.io/assets-for-api-docs/assets/dart-ui/blend_mode_exclusion.png',
         'url':
             'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
       },
@@ -56,6 +64,8 @@ class VideoPostsService extends HttpService {
         'post_date': '2020-07-18T12:30+0300',
         'title': 'Celebrity Sunday 3',
         'views': 321,
+        'thumbnail':
+            'https://flutter.github.io/assets-for-api-docs/assets/dart-ui/tile_mode_mirror_sweep.png',
         'url':
             'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
       },
@@ -64,8 +74,9 @@ class VideoPostsService extends HttpService {
         'post_date': '2020-07-18T15:40+0300',
         'title': 'Celebrity Sunday 4',
         'views': 321,
+        'thumbnail': null,
         'url':
-            'https://flutter.github.io/assets-for-api-docs/assets/widgets/align_transition.mp4',
+        'https://flutter.github.io/assets-for-api-docs/assets/widgets/align_transition.mp4',
       },
     ];
 

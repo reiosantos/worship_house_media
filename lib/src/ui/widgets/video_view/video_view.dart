@@ -1,6 +1,5 @@
 import 'package:whm/src/index.dart';
 
-
 class VideoView extends StatefulWidget {
   final String dataSource;
   final bool looping;

@@ -4,6 +4,7 @@ import 'package:whm/src/utilities/constants.dart';
 // ignore: must_be_immutable
 class VideoPost extends Equatable {
   final String url;
+  final String thumbnail;
   final String author;
   final String post_date;
   final String title;
@@ -11,7 +12,12 @@ class VideoPost extends Equatable {
   String days_past = '';
 
   VideoPost(
-      {this.author, this.url, this.post_date, this.title, this.views = 0}) {
+      {this.author,
+      this.url,
+      this.thumbnail,
+      this.post_date,
+      this.title,
+      this.views = 0}) {
     _calculateDaysPast();
   }
 
@@ -69,6 +75,7 @@ class VideoPost extends Equatable {
       title: json['title'] as String,
       views: json['views'] as num,
       url: json['url'] as String,
+      thumbnail: json['thumbnail'] as String,
     );
   }
 }

@@ -3,8 +3,8 @@ import 'package:whm/src/index.dart';
 import 'package:whm/src/models/VideoPost.dart';
 import 'package:whm/src/providers/navigator_provider.dart';
 import 'package:whm/src/ui/widgets/error/error.dart';
+import 'package:whm/src/ui/widgets/image/san_network_image.dart';
 import 'package:whm/src/ui/widgets/loader/loader.dart';
-import 'package:whm/src/ui/widgets/thumbnail/thumbnail.dart';
 import 'package:whm/src/utilities/constants.dart';
 
 class VideoPage extends StatefulWidget {
@@ -82,9 +82,21 @@ class _VideoPageState extends State<VideoPage>
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        GenThumbnailImage(
-                          thumbnailRequest:
-                              ThumbnailRequest(video: videoPost.url),
+                        SanNetworkImage(
+                          videoPost.thumbnail,
+                          overlay: Positioned(
+                            bottom: 0,
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: Icon(
+                              Platform.isIOS
+                                  ? CupertinoIcons.play_arrow_solid
+                                  : Icons.play_circle_outline,
+                              size: 72.0,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                         ListTileTheme(
                           style: ListTileStyle.list,
